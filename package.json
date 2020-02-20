@@ -1,0 +1,23 @@
+{
+  "name": "extra-objdump",
+  "version": "0.0.1",
+  "description": "Gets statistics of x86 instructions in ELF file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodef/extra-objdump.git"
+  },
+  "keywords": [
+    "extra",
+    "objdump"
+  ],
+  "author": "wolfram77@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodef/extra-objdump/issues"
+  },
+  "homepage": "https://github.com/nodef/extra-objdump#readme"
+}
