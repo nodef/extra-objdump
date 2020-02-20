@@ -1,8 +1,13 @@
 const readline = require('readline');
+// https://stackoverflow.com/questions/60326190/which-processor-instructions-are-used-most-commonly
+// https://unix.stackexchange.com/questions/343013/how-objdump-disassemble-elf-binary
+// https://stackoverflow.com/questions/17208960/what-are-the-functions-of-the-assembly-x86-edi-sil-and-dl-registers
+// https://stackoverflow.com/questions/20086849/how-to-read-from-stdin-line-by-line-in-node
+// https://stackoverflow.com/questions/11054534/how-to-use-install-gnu-binutils-objdump
 
 const RLABEL = /^\d+\s+<(\w+)@.*?>:$/;
 const RCODE = /^\s+\d+:[\d\s]+([^#]+)(#.*)?$/;
-const RINSTR = /(\w+)\s*([^,]+)?,?(.*)?/;
+const RINSTR = /(\w+(\s+scas\w*)?)\s*([^,]+)?,?(.*)?/;
 const RREF = /<([^@]*)@?.*?>/;
 var rl = readline.createInterface({
   input: process.stdin,
@@ -18,6 +23,12 @@ var registers = new Map();
 function mapInc(map, k) {
   if(!map.has(k)) map.set(k, 0);
   map.set(k, map.get(k)+1);
+}
+// https://www.tutorialspoint.com/assembly_programming/assembly_scas_instruction.htm
+
+// https://stackoverflow.com/questions/31158902/is-it-possible-to-sort-a-es6-map-object
+function mapSortFn([k1, v1], [k2, v2]) {
+  return v2-v1;
 }
 
 function onOp(op, n=1) {
@@ -45,7 +56,7 @@ rl.on('line', line => {
   if(!RCODE.test(line)) return;
   var [, instr, comment] = line.match(RCODE);
   if(RREF.test(comment)) mapInc(refs, comment.match(RREF)[1]);
-  var [, opcode, op1, op2] = instr.match(RINSTR);
+  var [, opcode,, op1, op2] = instr.match(RINSTR);
   if(RREF.test(op1)) mapInc(refs, op1.match(RREF)[1]);
   if(RREF.test(op2)) mapInc(refs, op2.match(RREF)[1]);
   mapInc(opcodes, opcode);
@@ -55,5 +66,9 @@ rl.on('line', line => {
   onOp(op1); onOp(op2);
 });
 rl.on('close', () => {
+  refs = new Map([...refs.entries()].sort(mapSortFn));
+  opcodes = new Map([...opcodes.entries()].sort(mapSortFn));
+  types = new Map([...types.entries()].sort(mapSortFn));
+  registers = new Map([...registers.entries()].sort(mapSortFn));
   console.log({labels, refs, opcodes, types, registers});
 });
