@@ -1,0 +1,83 @@
+opcode,tags
+aaa,ascii adjust byte add
+aad,ascii adjust word div
+aam,ascii adjust word mul
+aas,ascii adjust byte sub
+adc,add carry arithmetic
+add,add arithmetic
+and,logical and
+call,call procedure push stack control
+cbw,convert byte word
+clc,clear carry flag
+cld,clear direction flag
+cli,clear interrupt flag
+cmc,complement carry flag
+cmp,compare
+cmpsb,compare byte mem
+cmpsw,compare word mem
+cwd,convert word dword
+daa,adjust bcd byte add arithmetic
+das,adjust bcd byte sub arithmetic
+dec,decrement by 1,,"0x48…0x4f, 0xfe/1, 0xff/1"
+div,unsigned divide,dx:ax = dx:ax / r/m; resulting dx == remainder,"0xf6/6, 0xf7/6"
+esc,used with floating-point unit,,0xd8..0xdf
+hlt,enter halt state,,0xf4
+idiv,signed divide,dx:ax = dx:ax / r/m; resulting dx == remainder,"0xf6/7, 0xf7/7"
+imul,signed multiply,(1) dx:ax = ax * r/m; (2) ax = al * r/m,"0x69, 0x6b (both since 80186), 0xf6/5, 0xf7/5, 0x0faf (since 80386)"
+in,input from port,(1) al = port[imm]; (2) al = port[dx]; (3) ax = port[imm]; (4) ax = port[dx];,"0xe4, 0xe5, 0xec, 0xed"
+inc,increment by 1,,"0x40…0x47, 0xfe/0, 0xff/0"
+int,call to interrupt,,"0xcc, 0xcd"
+into,call to interrupt if overflow,,0xce
+iret,return from interrupt,,0xcf
+jcc,jump if condition,"(ja, jae, jb, jbe, jc, je, jg, jge, jl, jle, jna, jnae, jnb, jnbe, jnc, jne, jng, jnge, jnl, jnle, jno, jnp, jns, jnz, jo, jp, jpe, jpo, js, jz)","0x70…0x7f, 0x0f80…0x0f8f (since 80386)"
+jcxz,jump if cx is zero,,0xe3
+jmp,jump,,"0xe9…0xeb, 0xff/4, 0xff/5"
+lahf,load flags into ah register,,0x9f
+lds,load pointer using ds,,0xc5
+lea,load effective address,,0x8d
+les,load es with pointer,,0xc4
+lock,assert bus lock# signal,(for multiprocessing),0xf0
+lodsb,load string byte,if (df==0) al = *si++; else al = *si--;,0xac
+lodsw,load string word,if (df==0) ax = *si++; else ax = *si--;,0xad
+loop/loopx,loop control,"(loope, loopne, loopnz, loopz) if (x && --cx) goto lbl;",0xe0…0xe2
+mov,move,"copies data from one location to another, (1) r/m = r; (2) r = r/m;",0xa0...0xa3
+movsb,move byte from string to string,if (df==0)    *(byte*)di++ = *(byte*)si++;  else    *(byte*)di-- = *(byte*)si--;,0xa4
+movsw,move word from string to string,if (df==0)    *(word*)di++ = *(word*)si++;  else    *(word*)di-- = *(word*)si--;,0xa5
+mul,unsigned multiply,(1) dx:ax = ax * r/m; (2) ax = al * r/m;,0xf6/4…0xf7/4
+neg,two's complement negation,r/m *= -1;,0xf6/3…0xf7/3
+nop,no operation,"opcode equivalent to xchg eax, eax",0x90
+not,"negate the operand, logical not",r/m ^= -1;,0xf6/2…0xf7/2
+or,logical or,(1) r/m |= r/imm; (2) r |= m/imm;,"0x08…0x0d, 0x80…0x83/1"
+out,output to port,(1) port[imm] = al; (2) port[dx] = al; (3) port[imm] = ax; (4) port[dx] = ax;,"0xe6, 0xe7, 0xee, 0xef"
+pop,pop data from stack,r/m = *sp++; pop cs (opcode 0x0f) works only on 8086/8088. later cpus use 0x0f as a prefix for newer instructions.,"0x07, 0x0f(8086/8088 only), 0x17, 0x1f, 0x58…0x5f, 0x8f/0"
+popf,pop flags register from stack,flags = *sp++;,0x9d
+push,push data onto stack,*--sp = r/m;,"0x06, 0x0e, 0x16, 0x1e, 0x50…0x57, 0x68, 0x6a (both since 80186), 0xff/6"
+pushf,push flags onto stack,*--sp = flags;,0x9c
+rcl,rotate left (with carry),,"0xc0…0xc1/2 (since 80186), 0xd0…0xd3/2"
+rcr,rotate right (with carry),,"0xc0…0xc1/3 (since 80186), 0xd0…0xd3/3"
+repxx,repeat movs/stos/cmps/lods/scas,"(rep, repe, repne, repnz, repz)","0xf2, 0xf3"
+ret,return from procedure,not a real instruction. the assembler will translate these to a retn or a retf depending on the memory model of the target system.,
+retn,return from near procedure,,"0xc2, 0xc3"
+retf,return from far procedure,,"0xca, 0xcb"
+rol,rotate left,,"0xc0…0xc1/0 (since 80186), 0xd0…0xd3/0"
+ror,rotate right,,"0xc0…0xc1/1 (since 80186), 0xd0…0xd3/1"
+sahf,store ah into flags,,0x9e
+sal,shift arithmetically left (signed shift left),(1) r/m <<= 1; (2) r/m <<= cl;,"0xc0…0xc1/4 (since 80186), 0xd0…0xd3/4"
+sar,shift arithmetically right (signed shift right),(1) (signed) r/m >>= 1; (2) (signed) r/m >>= cl;,"0xc0…0xc1/7 (since 80186), 0xd0…0xd3/7"
+sbb,subtraction with borrow,"alternative 1-byte encoding of sbb al, al is available via undocumented salc instruction","0x18…0x1d, 0x80…0x83/3"
+scasb,compare byte string,,0xae
+scasw,compare word string,,0xaf
+shl,shift left (unsigned shift left),,"0xc0…0xc1/4 (since 80186), 0xd0…0xd3/4"
+shr,shift right (unsigned shift right),,"0xc0…0xc1/5 (since 80186), 0xd0…0xd3/5"
+stc,set carry flag,cf = 1;,0xf9
+std,set direction flag,df = 1;,0xfd
+sti,set interrupt flag,if = 1;,0xfb
+stosb,store byte in string,if (df==0) *es:di++ = al; else *es:di-- = al;,0xaa
+stosw,store word in string,if (df==0) *es:di++ = ax; else *es:di-- = ax;,0xab
+sub,subtraction,(1) r/m -= r/imm; (2) r -= m/imm;,"0x28…0x2d, 0x80…0x83/5"
+test,logical compare (and),(1) r/m & r/imm; (2) r & m/imm;,"0x84, 0x84, 0xa8, 0xa9, 0xf6/0, 0xf7/0"
+wait,wait until not busy,waits until busy# pin is inactive (used with floating-point unit),0x9b
+xchg,exchange data,r :=: r/m; a spinlock typically uses xchg as an atomic operation. (coma bug).,"0x86, 0x87, 0x91…0x97"
+xlat,table look-up translation,"behaves like mov al, [bx+al]",0xd7
+xor,exclusive or,(1) r/m ^= r/imm; (2) r ^= m/imm;,"0x30…0x35, 0x80…0x83/6"
+

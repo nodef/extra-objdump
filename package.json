@@ -1,6 +1,6 @@
 {
   "name": "extra-objdump",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Gets statistics of x86 instructions in ELF file.",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/nodef/extra-objdump/issues"
   },
-  "homepage": "https://github.com/nodef/extra-objdump#readme"
+  "homepage": "https://github.com/nodef/extra-objdump#readme",
+  "devDependencies": {
+    "find-npm-prefix": "^1.0.2",
+    "recast": "^0.18.5"
+  }
 }
