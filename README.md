@@ -12,3 +12,5 @@ Gets statistics of x86 instructions in ELF file.
 // https://stackoverflow.com/questions/12755997/how-to-create-streams-from-string-in-node-js
 // https://www.strchr.com/x86_machine_code_statistics
 // https://en.wikipedia.org/wiki/X86_instruction_listings
+
+![](https://ga-beacon.deno.dev/G-RC63DPBH3P:SH3Eq-NoQ9mwgYeHWxu7cw/github.com/nodef/extra-objdump)
